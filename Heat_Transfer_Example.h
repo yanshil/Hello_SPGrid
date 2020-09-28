@@ -1,10 +1,10 @@
 //!#####################################################################
-//! \file Heat_Diffusion_Example.h
+//! \file Heat_Transfer_Example.h
 //!#####################################################################
-// Class Heat_Diffusion_Example
+// Class Heat_Transfer_Example
 //######################################################################
-#ifndef __Heat_Diffusion_Example__
-#define __Heat_Diffusion_Example__
+#ifndef __Heat_Transfer_Example__
+#define __Heat_Transfer_Example__
 
 #include <nova/Dynamics/Hierarchy/Grid_Hierarchy.h>
 #include <nova/Dynamics/Hierarchy/Grid_Topology_Helper.h>
@@ -15,7 +15,7 @@
 
 namespace Nova{
 template<class T,int d>
-class Heat_Diffusion_Example: public Example<T,d>
+class Heat_Transfer_Example: public Example<T,d>
 {
     using TV                        = Vector<T,d>;
     using Base                      = Example<T,d>;
@@ -59,15 +59,16 @@ class Heat_Diffusion_Example: public Example<T,d>
     // Vector<T Struct_type::*,d> face_qc_channels;
     Vector<Vector<bool,2>,d> domain_walls;
 
-    // Array<Implicit_Object<T,d>*> velocity_sources;
-    // Array<Implicit_Object<T,d>*> density_sources;
+    Array<Implicit_Object<T,d>*> velocity_sources;
+    Array<Implicit_Object<T,d>*> density_sources;
 
-    Heat_Diffusion_Example();
+    Heat_Transfer_Example();
 
-    ~Heat_Diffusion_Example()
+    ~Heat_Transfer_Example()
     {if(hierarchy!=nullptr) delete hierarchy;}
 
 //######################################################################
+// --- Will be implemented in Standard_test.h
     // virtual void Initialize_Rasterizer(const int test_number)=0;
     virtual void Initialize_Fluid_State(const int test_number)=0;
     virtual void Initialize_Sources(const int test_number)=0;

@@ -1,21 +1,21 @@
 //!#####################################################################
-//! \file Heat_Diffusion_Driver.cpp
+//! \file Heat_Transfer_Driver.cpp
 //!#####################################################################
 #include <chrono>
-#include "Heat_Diffusion_Driver.h"
+#include "Heat_Transfer_Driver.h"
 using namespace std::chrono;
 using namespace Nova;
 //######################################################################
 // Constructor
 //######################################################################
-template<class T,int d> Heat_Diffusion_Driver<T,d>::
-Heat_Diffusion_Driver(Heat_Diffusion_Example<T,d>& example_input)
+template<class T,int d> Heat_Transfer_Driver<T,d>::
+Heat_Transfer_Driver(Heat_Transfer_Example<T,d>& example_input)
     :Base(example_input),example(example_input)
 {}
 //######################################################################
 // Initialize
 //######################################################################
-template<class T,int d> void Heat_Diffusion_Driver<T,d>::
+template<class T,int d> void Heat_Transfer_Driver<T,d>::
 Initialize()
 {
     time=(T)0.;
@@ -37,7 +37,7 @@ Initialize()
 //######################################################################
 // Advance_One_Time_Step_Explicitly
 //######################################################################
-template<class T,int d> void Heat_Diffusion_Driver<T,d>::
+template<class T,int d> void Heat_Transfer_Driver<T,d>::
 Advance_One_Time_Step_Explicitly(const T dt,const T time)
 {
     if(!example.nd) {
@@ -61,7 +61,7 @@ Advance_One_Time_Step_Explicitly(const T dt,const T time)
 // //######################################################################
 // // Advance_One_Time_Step_Implicitly
 // //######################################################################
-// template<class T,int d> void Heat_Diffusion_Driver<T,d>::
+// template<class T,int d> void Heat_Transfer_Driver<T,d>::
 // Advance_One_Time_Step_Implicitly(const T dt,const T time)
 // {
 //     high_resolution_clock::time_point tb=high_resolution_clock::now();
@@ -72,7 +72,7 @@ Advance_One_Time_Step_Explicitly(const T dt,const T time)
 //######################################################################
 // Advance_To_Target_Time
 //######################################################################
-template<class T,int d> void Heat_Diffusion_Driver<T,d>::
+template<class T,int d> void Heat_Transfer_Driver<T,d>::
 Advance_To_Target_Time(const T target_time)
 {
     bool done=false;
@@ -95,7 +95,7 @@ Advance_To_Target_Time(const T target_time)
 //######################################################################
 // Simulate_To_Frame
 //######################################################################
-template<class T,int d> void Heat_Diffusion_Driver<T,d>::
+template<class T,int d> void Heat_Transfer_Driver<T,d>::
 Simulate_To_Frame(const int target_frame)
 {
     example.frame_title="Frame "+std::to_string(example.current_frame);
@@ -124,9 +124,9 @@ Simulate_To_Frame(const int target_frame)
     }
 }
 //######################################################################
-template class Nova::Heat_Diffusion_Driver<float,2>;
-template class Nova::Heat_Diffusion_Driver<float,3>;
+template class Nova::Heat_Transfer_Driver<float,2>;
+template class Nova::Heat_Transfer_Driver<float,3>;
 #ifdef COMPILE_WITH_DOUBLE_SUPPORT
-template class Nova::Heat_Diffusion_Driver<double,2>;
-template class Nova::Heat_Diffusion_Driver<double,3>;
+template class Nova::Heat_Transfer_Driver<double,2>;
+template class Nova::Heat_Transfer_Driver<double,3>;
 #endif

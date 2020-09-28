@@ -1,5 +1,5 @@
 //!#####################################################################
-//! \file Heat_Diffusion_Example.cpp
+//! \file Heat_Transfer_Example.cpp
 //!#####################################################################
 #include <nova/Dynamics/Hierarchy/Grid_Hierarchy_Initializer.h>
 #include <nova/Dynamics/Hierarchy/Grid_Hierarchy_Iterator.h>
@@ -8,7 +8,7 @@
 #include <nova/Tools/Krylov_Solvers/Conjugate_Gradient.h>
 #include <nova/Tools/Utilities/File_Utilities.h>
 
-#include "Heat_Diffusion_Example.h"
+#include "Heat_Transfer_Example.h"
 #include "Write_To_File_Helper.h"
 #include <omp.h>
 #include <chrono>
@@ -20,8 +20,8 @@ extern int number_of_threads;
 //######################################################################
 // Constructor
 //######################################################################
-template<class T,int d> Heat_Diffusion_Example<T,d>::
-Heat_Diffusion_Example()
+template<class T,int d> Heat_Transfer_Example<T,d>::
+Heat_Transfer_Example()
     :Base(),hierarchy(nullptr),rasterizer(nullptr)
 {
     // face_velocity_channels(0)           = &Struct_type::ch0;
@@ -36,7 +36,7 @@ Heat_Diffusion_Example()
 //######################################################################
 // Initialize
 //######################################################################
-template<class T,int d> void Heat_Diffusion_Example<T,d>::
+template<class T,int d> void Heat_Transfer_Example<T,d>::
 Initialize()
 {
     diffusion_rt=(T)0.; qc_advection_rt=(T)0.; 
@@ -46,7 +46,7 @@ Initialize()
 //######################################################################
 // Initialize_SPGrid
 //######################################################################
-template<class T,int d> void Heat_Diffusion_Example<T,d>::
+template<class T,int d> void Heat_Transfer_Example<T,d>::
 Initialize_SPGrid()
 {
     Log::Scope scope("Initialize_SPGrid");
@@ -67,14 +67,14 @@ Initialize_SPGrid()
 //######################################################################
 // Limit_Dt
 //######################################################################
-template<class T,int d> void Heat_Diffusion_Example<T,d>::
+template<class T,int d> void Heat_Transfer_Example<T,d>::
 Limit_Dt(T& dt,const T time)
 {
 }
 //######################################################################
 // Advect_Density
 //######################################################################
-template    <class T,int d> void Heat_Diffusion_Example<T,d>::
+template    <class T,int d> void Heat_Transfer_Example<T,d>::
 Advect_Density(const T dt)
 {
     Channel_Vector cell_velocity_channels;
@@ -90,7 +90,7 @@ Advect_Density(const T dt)
 //######################################################################
 // Register_Options
 //######################################################################
-template<class T,int d> void Heat_Diffusion_Example<T,d>::
+template<class T,int d> void Heat_Transfer_Example<T,d>::
 Register_Options()
 {
     Base::Register_Options();
@@ -119,7 +119,7 @@ Register_Options()
 //######################################################################
 // Parse_Options
 //######################################################################
-template<class T,int d> void Heat_Diffusion_Example<T,d>::
+template<class T,int d> void Heat_Transfer_Example<T,d>::
 Parse_Options()
 {
     Base::Parse_Options();
@@ -158,7 +158,7 @@ Parse_Options()
 //######################################################################
 // Write_Output_Files
 //######################################################################
-template<class T,int d> void Heat_Diffusion_Example<T,d>::
+template<class T,int d> void Heat_Transfer_Example<T,d>::
 Write_Output_Files(const int frame) const
 {
     File_Utilities::Create_Directory(output_directory+"/"+std::to_string(frame));
@@ -172,14 +172,14 @@ Write_Output_Files(const int frame) const
 //######################################################################
 // Read_Output_Files
 //######################################################################
-template<class T,int d> void Heat_Diffusion_Example<T,d>::
+template<class T,int d> void Heat_Transfer_Example<T,d>::
 Read_Output_Files(const int frame)
 {
 }
 //######################################################################
-template class Nova::Heat_Diffusion_Example<float,2>;
-template class Nova::Heat_Diffusion_Example<float,3>;
+template class Nova::Heat_Transfer_Example<float,2>;
+template class Nova::Heat_Transfer_Example<float,3>;
 #ifdef COMPILE_WITH_DOUBLE_SUPPORT
-template class Nova::Heat_Diffusion_Example<double,2>;
-template class Nova::Heat_Diffusion_Example<double,3>;
+template class Nova::Heat_Transfer_Example<double,2>;
+template class Nova::Heat_Transfer_Example<double,3>;
 #endif

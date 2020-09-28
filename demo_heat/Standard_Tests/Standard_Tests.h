@@ -10,7 +10,7 @@
 #include <nova/SPGrid/Tools/SPGrid_Clear.h>
 #include <nova/Tools/Utilities/Range_Iterator.h>
 #include "../../Poisson_Data.h"
-#include "../../Heat_Diffusion_Example.h"
+#include "../../Heat_Transfer_Example.h"
 
 
 namespace Nova{
@@ -33,7 +33,9 @@ class Standard_Tests: public Smoke_Example<T,d>
     using Base::domain_walls;
     using Base::hierarchy;
     // using Base::rasterizer;
-    // using Base::cfl;    using Base::velocity_sources;   using Base::density_sources;    using Base::density_channel;
+    // using Base::cfl;    
+    using Base::velocity_sources;   using Base::density_sources;    
+    using Base::density_channel;
     // using Base::nd;     using Base::FICKS;              using Base::diff_coeff;         using Base::Fc;             
     // using Base::tau;    using Base::bv;                 using Base::source_rate;
     // using Base::uvf;    using Base::const_density_value; using Base::const_density_source;
