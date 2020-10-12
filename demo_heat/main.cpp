@@ -2,7 +2,7 @@
 //! \file main.cpp
 //!#####################################################################
 #include <nova/Tools/Utilities/Pthread_Queue.h>
-#include "../Heat_Diffusion_Driver.h"
+#include "../Heat_Transfer_Driver.h"
 #include "Standard_Tests/Standard_Tests.h"
 using namespace Nova;
 
@@ -18,7 +18,7 @@ int main(int argc,char** argv)
     typedef float T;typedef Vector<T,d> TV;
     typedef Vector<int,d> T_INDEX;
 
-    Smoke_Example<T,d> *example=new Standard_Tests<T,d>();
+    Heat_Transfer_Example<T,d> *example=new Standard_Tests<T,d>();
     example->Parse(argc,argv);
 
     if(number_of_threads) pthread_queue=new Pthread_Queue(number_of_threads);
@@ -28,7 +28,7 @@ int main(int argc,char** argv)
     File_Utilities::Create_Directory(example->output_directory+"/density_data");
     Log::Instance()->Copy_Log_To_File(example->output_directory+"/common/log.txt",false);
 
-    Smoke_Driver<T,d> driver(*example);
+    Heat_Transfer_Driver<T,d> driver(*example);
     driver.Execute_Main_Program();
 
     delete example;

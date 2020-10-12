@@ -39,9 +39,10 @@ Heat_Transfer_Example()
 template<class T,int d> void Heat_Transfer_Example<T,d>::
 Initialize()
 {
-    diffusion_rt=(T)0.; qc_advection_rt=(T)0.; 
+    // diffusion_rt=(T)0.; qc_advection_rt=(T)0.; 
     Initialize_SPGrid();
-    Initialize_Fluid_State(test_number);
+    Set_Boundary(test_number);
+    // Initialize_Fluid_State(test_number);
 }
 //######################################################################
 // Initialize_SPGrid
@@ -50,7 +51,7 @@ template<class T,int d> void Heat_Transfer_Example<T,d>::
 Initialize_SPGrid()
 {
     Log::Scope scope("Initialize_SPGrid");
-    // Initialize_Rasterizer(test_number);
+    Initialize_Rasterizer(test_number);
     for(Grid_Hierarchy_Iterator<d,Hierarchy_Rasterizer> iterator(hierarchy->Lattice(levels-1).Cell_Indices(),levels-1,*rasterizer);iterator.Valid();iterator.Next());
     Grid_Hierarchy_Initializer<Struct_type,T,d>::Flag_Ghost_Cells(*hierarchy);
     Grid_Hierarchy_Initializer<Struct_type,T,d>::Flag_Valid_Faces(*hierarchy);
@@ -59,7 +60,7 @@ Initialize_SPGrid()
     Grid_Hierarchy_Initializer<Struct_type,T,d>::Flag_Shared_Nodes(*hierarchy);
     Grid_Hierarchy_Initializer<Struct_type,T,d>::Flag_Ghost_Nodes(*hierarchy);
     Grid_Hierarchy_Initializer<Struct_type,T,d>::Flag_T_Junction_Nodes(*hierarchy);
-    Initialize_Dirichlet_Cells<Struct_type,T,d>(*hierarchy,domain_walls);
+    // Initialize_Dirichlet_Cells<Struct_type,T,d>(*hierarchy,domain_walls);
     //Set_Neumann_Faces_Inside_Sources();
     hierarchy->Update_Block_Offsets();
     hierarchy->Initialize_Red_Black_Partition(2*number_of_threads);
@@ -84,8 +85,8 @@ Advect_Density(const T dt)
     T Struct_type::* temp_channel           = &Struct_type::ch11;
     Vector<uint64_t,d> other_face_offsets;
     for(int axis=0;axis<d;++axis) other_face_offsets(axis)=Topology_Helper::Axis_Vector_Offset(axis);
-    Uniform_Grid_Averaging_Helper<Struct_type,T,d>::Uniform_Grid_Average_Face_Velocities_To_Cells(*hierarchy,hierarchy->Allocator(0),hierarchy->Blocks(0),face_velocity_channels,cell_velocity_channels,other_face_offsets);
-    Uniform_Grid_Advection_Helper<Struct_type,T,d>::Uniform_Grid_Advect_Density(*hierarchy,cell_velocity_channels,density_channel,temp_channel,dt);
+    // Uniform_Grid_Averaging_Helper<Struct_type,T,d>::Uniform_Grid_Average_Face_Velocities_To_Cells(*hierarchy,hierarchy->Allocator(0),hierarchy->Blocks(0),face_velocity_channels,cell_velocity_channels,other_face_offsets);
+    // Uniform_Grid_Advection_Helper<Struct_type,T,d>::Uniform_Grid_Advect_Density(*hierarchy,cell_velocity_channels,density_channel,temp_channel,dt);
 }
 //######################################################################
 // Register_Options

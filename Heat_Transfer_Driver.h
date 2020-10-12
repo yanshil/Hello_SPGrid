@@ -20,12 +20,12 @@ class Heat_Transfer_Driver: public Driver<T,d>
     using Base::Compute_Dt;using Base::Write_Output_Files;
 
   public:
-    // int substep_counter;
+    int substep_counter;
     // T density_advection_rt;
     // T velocity_advection_rt;
     // T source_modification_rf;
     // T projection_rt;
-    // T total_rt;
+    T total_rt;
     Heat_Transfer_Example<T,d>& example;
 
     Heat_Transfer_Driver(Heat_Transfer_Example<T,d>& example_input);

@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/../../Library/Dynamics/include",
+                "${workspaceFolder}/../../Library/Geometry/include",
+                "${workspaceFolder}/../../Library/SPGrid/include",
+                "${workspaceFolder}/../../Library/Tools/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}

@@ -30,7 +30,7 @@ class Heat_Transfer_Example: public Example<T,d>
 
   public:
     using Base::frame_title;using Base::output_directory;using Base::parse_args;using Base::first_frame;
-    // int test_number;
+    int test_number;
     // int iteration_counter;
     // bool nd;
     // bool const_density_source;
@@ -47,14 +47,14 @@ class Heat_Transfer_Example: public Example<T,d>
     // T Fc;
     // T tau;
     T_INDEX counts;
-    // int levels,mg_levels,cg_iterations,cg_restart_iterations;
-    // T cfl,cg_tolerance;
+    int levels,mg_levels,cg_iterations,cg_restart_iterations;
+    T cfl,cg_tolerance;
     
     Hierarchy *hierarchy;
-    // Hierarchy_Rasterizer *rasterizer;
+    Hierarchy_Rasterizer *rasterizer;
 
-    // T Struct_type::* density_channel;
-    // T Struct_type::* density_backup_channel;
+    T Struct_type::* density_channel;
+    T Struct_type::* density_backup_channel;
     // Vector<T Struct_type::*,d> face_velocity_channels;
     // Vector<T Struct_type::*,d> face_qc_channels;
     Vector<Vector<bool,2>,d> domain_walls;
@@ -69,15 +69,15 @@ class Heat_Transfer_Example: public Example<T,d>
 
 //######################################################################
 // --- Will be implemented in Standard_test.h
-    // virtual void Initialize_Rasterizer(const int test_number)=0;
-    virtual void Initialize_Fluid_State(const int test_number)=0;
+    virtual void Initialize_Rasterizer(const int test_number)=0;
+    // virtual void Initialize_Fluid_State(const int test_number)=0;
     virtual void Initialize_Sources(const int test_number)=0;
-    virtual void Set_boundary(const int test_number)=0;
+    virtual void Set_Boundary(const int test_number)=0;
 //######################################################################
     void Initialize();
     void Initialize_SPGrid();
     void Limit_Dt(T& dt,const T time) override;
-    // void Advect_Density(const T dt);
+    void Advect_Density(const T dt);
     // void Advect_Face_Vector(const T dt);
     // void Diffuse_Density(const T dt);
     // void Backup_Density();
