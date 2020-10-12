@@ -18,11 +18,11 @@ struct Poisson_Data
     T ch0;      // X-face_velocity
     T ch1;      // Y-face_velocity
     T ch2;      // Z-face_velocity
-    T ch3;      // X-Qc
-    T ch4;      // Y-Qc
-    T ch5;      // Z-Qc
-    T ch6;      // density
-    T ch7;      // density_backup
+    T ch3;      // pressure
+    T ch4;      // density
+    T ch5;      // temp
+    T ch6;      // temp
+    T ch7;      // temp
     T ch8;      // temp
     T ch9;      // temp
     T ch10;     // temp

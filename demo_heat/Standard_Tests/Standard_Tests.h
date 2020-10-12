@@ -11,6 +11,8 @@
 #include <nova/Tools/Utilities/Range_Iterator.h>
 #include "../../Poisson_Data.h"
 #include "../../Heat_Transfer_Example.h"
+#include "../../Rasterizers/Adaptive_Sphere_Rasterizer.h"
+#include "../../Rasterizers/Randomized_Rasterizer.h"
 
 
 namespace Nova{
@@ -32,7 +34,7 @@ class Standard_Tests: public Heat_Transfer_Example<T,d>
     using Base::levels;
     using Base::domain_walls;
     using Base::hierarchy;
-    // using Base::rasterizer;
+    using Base::rasterizer;
     // using Base::cfl;    
     using Base::velocity_sources;   using Base::density_sources;    
     using Base::density_channel;
@@ -41,11 +43,6 @@ class Standard_Tests: public Heat_Transfer_Example<T,d>
     // using Base::uvf;    
     // using Base::const_density_value; using Base::const_density_source;
     // using Base::explicit_diffusion;
-    /****************************
-     * example explanation:
-     *
-     * 1. Simple inflow/outflow.
-     ****************************/
 
     Standard_Tests()
         :Base()
@@ -66,7 +63,7 @@ class Standard_Tests: public Heat_Transfer_Example<T,d>
 //######################################################################
     void Initialize_Rasterizer(const int test_number) override
     {
-        // rasterizer=new Randomized_Rasterizer<Struct_type,T,d>(*hierarchy);
+        rasterizer=new Randomized_Rasterizer<Struct_type,T,d>(*hierarchy);
     }
 //######################################################################
     void Initialize_Fluid_State(const int test_number)

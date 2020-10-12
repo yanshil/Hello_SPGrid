@@ -48,14 +48,17 @@ class Heat_Transfer_Example: public Example<T,d>
     // T tau;
     T_INDEX counts;
     int levels,mg_levels,cg_iterations,cg_restart_iterations;
-    T cfl,cg_tolerance;
+    // T cfl;
+    T cg_tolerance;
     
     Hierarchy *hierarchy;
     Hierarchy_Rasterizer *rasterizer;
 
+    T Struct_type::* pressure_channel;
     T Struct_type::* density_channel;
-    T Struct_type::* density_backup_channel;
-    // Vector<T Struct_type::*,d> face_velocity_channels;
+    // T Struct_type::* density_backup_channel;
+    
+    Vector<T Struct_type::*,d> face_velocity_channels;
     // Vector<T Struct_type::*,d> face_qc_channels;
     Vector<Vector<bool,2>,d> domain_walls;
 
@@ -85,7 +88,7 @@ class Heat_Transfer_Example: public Example<T,d>
     // void Non_Ficks_Diffusion(const T dt);
     // void Modify_Density_With_Sources();
     // void Add_Source(const T dt);
-    // void Advect_Face_Velocities(const T dt);
+    void Advect_Face_Velocities(const T dt);
     // void Set_Neumann_Faces_Inside_Sources();
     // void Initialize_Velocity_Field();
     // void Project();
