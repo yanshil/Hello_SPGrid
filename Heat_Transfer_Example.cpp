@@ -9,6 +9,8 @@
 #include <nova/Tools/Krylov_Solvers/Conjugate_Gradient.h>
 #include <nova/Tools/Utilities/File_Utilities.h>
 
+#include "Compute_Time_Step.h"
+#include "Density_Modifier.h"
 #include "Heat_Transfer_Example.h"
 #include "Initialize_Dirichlet_Cells.h"
 #include "Write_To_File_Helper.h"
@@ -26,14 +28,6 @@ template<class T,int d> Heat_Transfer_Example<T,d>::
 Heat_Transfer_Example()
     :Base(),hierarchy(nullptr),rasterizer(nullptr)
 {
-    // face_velocity_channels(0)           = &Struct_type::ch0;
-    // face_velocity_channels(1)           = &Struct_type::ch1;
-    // if(d==3) face_velocity_channels(2)  = &Struct_type::ch2;
-    // face_qc_channels(0)                 = &Struct_type::ch3;
-    // face_qc_channels(1)                 = &Struct_type::ch4;
-    // if(d==3) face_qc_channels(2)        = &Struct_type::ch5;
-    // density_channel                     = &Struct_type::ch6;
-    // density_backup_channel              = &Struct_type::ch7;
     face_velocity_channels(0)           = &Struct_type::ch0;
     face_velocity_channels(1)           = &Struct_type::ch1;
     if(d==3) face_velocity_channels(2)  = &Struct_type::ch2;
@@ -46,10 +40,8 @@ Heat_Transfer_Example()
 template<class T,int d> void Heat_Transfer_Example<T,d>::
 Initialize()
 {
-    // diffusion_rt=(T)0.; qc_advection_rt=(T)0.; 
     Initialize_SPGrid();
-    Set_Boundary(test_number);
-    // Initialize_Fluid_State(test_number);
+    Initialize_Fluid_State(test_number);
 }
 //######################################################################
 // Initialize_SPGrid
@@ -79,6 +71,17 @@ Initialize_SPGrid()
 template<class T,int d> void Heat_Transfer_Example<T,d>::
 Limit_Dt(T& dt,const T time)
 {
+    T dt_convection=(T)0.;
+
+    Vector<uint64_t,d> other_face_offsets;
+    for(int axis=0;axis<d;++axis) other_face_offsets(axis)=Topology_Helper::Axis_Vector_Offset(axis);
+
+    for(int level=0;level<levels;++level)
+        Compute_Time_Step<Struct_type,T,d>(*hierarchy,hierarchy->Blocks(level),face_velocity_channels,
+                                           other_face_offsets,level,dt_convection);
+
+    if(dt_convection>(T)1e-5) dt=cfl/dt_convection;
+    Log::cout<<"Time Step: "<<dt<<std::endl;
 }
 //######################################################################
 // Advect_Density
@@ -95,6 +98,15 @@ Advect_Density(const T dt)
     Grid_Hierarchy_Averaging<Struct_type,T,d>::Average_Cell_Density_To_Nodes(*hierarchy,density_channel,node_density_channel,temp_channel);
     Grid_Hierarchy_Averaging<Struct_type,T,d>::Average_Face_Velocities_To_Nodes(*hierarchy,face_velocity_channels,node_velocity_channels,temp_channel);
     Grid_Hierarchy_Advection<Struct_type,T,d>::Advect_Density(*hierarchy,node_velocity_channels,density_channel,node_density_channel,temp_channel,dt);
+}
+//######################################################################
+// Modify_Density_With_Sources
+//######################################################################
+template<class T,int d> void Heat_Transfer_Example<T,d>::
+Modify_Density_With_Sources()
+{
+    for(int level=0;level<levels;++level)
+        Density_Modifier<Struct_type,T,d>(*hierarchy,hierarchy->Blocks(level),density_channel,density_sources,level);
 }
 //######################################################################
 // Advect_Face_Velocities

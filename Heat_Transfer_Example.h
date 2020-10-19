@@ -31,24 +31,9 @@ class Heat_Transfer_Example: public Example<T,d>
   public:
     using Base::frame_title;using Base::output_directory;using Base::parse_args;using Base::first_frame;
     int test_number;
-    // int iteration_counter;
-    // bool nd;
-    // bool const_density_source;
-    // T const_density_value;
-    // T diffusion_rt=(T)0.;
-    // T qc_advection_rt=(T)0.;
-    // T qc_update_rt=(T)0.;
-    // bool FICKS;
-    // bool explicit_diffusion;
-    // bool uvf;
-    // T source_rate;
-    // T bv;
-    // T diff_coeff;
-    // T Fc;
-    // T tau;
     T_INDEX counts;
     int levels,mg_levels,cg_iterations,cg_restart_iterations;
-    // T cfl;
+    T cfl;
     T cg_tolerance;
     
     Hierarchy *hierarchy;
@@ -73,7 +58,7 @@ class Heat_Transfer_Example: public Example<T,d>
 //######################################################################
 // --- Will be implemented in Standard_test.h
     virtual void Initialize_Rasterizer(const int test_number)=0;
-    // virtual void Initialize_Fluid_State(const int test_number)=0;
+    virtual void Initialize_Fluid_State(const int test_number)=0;
     virtual void Initialize_Sources(const int test_number)=0;
     virtual void Set_Boundary(const int test_number)=0;
 //######################################################################
@@ -86,7 +71,7 @@ class Heat_Transfer_Example: public Example<T,d>
     // void Backup_Density();
     // void Ficks_Diffusion(const T dt);
     // void Non_Ficks_Diffusion(const T dt);
-    // void Modify_Density_With_Sources();
+    void Modify_Density_With_Sources();
     // void Add_Source(const T dt);
     void Advect_Face_Velocities(const T dt);
     // void Set_Neumann_Faces_Inside_Sources();

@@ -35,14 +35,10 @@ class Standard_Tests: public Heat_Transfer_Example<T,d>
     using Base::domain_walls;
     using Base::hierarchy;
     using Base::rasterizer;
-    // using Base::cfl;    
+    using Base::cfl;
     using Base::velocity_sources;   using Base::density_sources;    
     using Base::density_channel;
-    // using Base::nd;     using Base::FICKS;              using Base::diff_coeff;         using Base::Fc;             
-    // using Base::tau;    using Base::bv;                 using Base::source_rate;
-    // using Base::uvf;    
-    // using Base::const_density_value; using Base::const_density_source;
-    // using Base::explicit_diffusion;
+
 
     Standard_Tests()
         :Base()
@@ -53,20 +49,22 @@ class Standard_Tests: public Heat_Transfer_Example<T,d>
     {
         Base::Parse_Options();
         output_directory="HeatDiffusion_"+std::to_string(d)+"d_"+"case_"+std::to_string(test_number)+"_Resolution_"+std::to_string(counts(0))+"x"+std::to_string(counts(1));
-        // if(nd) output_directory=(explicit_diffusion?"Smoke_":"Implicit_Smoke_")+std::to_string(d)+"d_"+"case_"+std::to_string(test_number)+(uvf?"_Uniform":"")+"_bv_"+std::to_string(bv)+(const_density_source?"":"_sr_"+std::to_string(source_rate))+"_Resolution_"+std::to_string(counts(0))+"x"+std::to_string(counts(1));
-        // else output_directory=(explicit_diffusion?"Smoke_":"Implicit_Smoke_")+std::to_string(d)+"d_"+(FICKS?"F":"NF")+"_case_"+std::to_string(test_number)+"_diff_"+std::to_string(diff_coeff)+"_Fc_"+std::to_string(Fc)+"_tau_"+std::to_string(tau)+(uvf?"_Uniform":"")+"_bv_"+std::to_string(bv)+(const_density_source?"":"_sr_"+std::to_string(source_rate))+"_Resolution_"+std::to_string(counts(0))+"x"+std::to_string(counts(1));
+
         for(int axis=0;axis<d;++axis) for(int side=0;side<2;++side) domain_walls(axis)(side)=false;
-        TV min_corner,max_corner=TV(4.);
-        max_corner(1)=(T)8.;
+        
+        // TV min_corner,max_corner=TV(4.);
+        // max_corner(1)=(T)8.;
+        TV min_corner,max_corner=TV(1);
         hierarchy=new Hierarchy(counts,Range<T,d>(min_corner,max_corner),levels);
     }
 //######################################################################
     void Initialize_Rasterizer(const int test_number) override
     {
-        rasterizer=new Randomized_Rasterizer<Struct_type,T,d>(*hierarchy);
+        // rasterizer=new Randomized_Rasterizer<Struct_type,T,d>(*hierarchy);
+        rasterizer=new Adaptive_Sphere_Rasterizer<Struct_type,T,d>(*hierarchy,TV(.5),(T).1);
     }
 //######################################################################
-    void Initialize_Fluid_State(const int test_number)
+    void Initialize_Fluid_State(const int test_number) override
     {
         // clear density channel
         for(int level=0;level<levels;++level)
@@ -83,15 +81,15 @@ class Standard_Tests: public Heat_Transfer_Example<T,d>
 
                 for(int e=0;e<Flag_array_mask::elements_per_block;++e,offset+=sizeof(Flags_type)){
                     const T_INDEX index=base_index+range_iterator.Index();
-                    // if(flags(offset)&Cell_Type_Interior && density_sources(0)->Inside(hierarchy->Lattice(level).Center(index))) data(offset)=const_density_value;
-                    range_iterator.Next();
-                    }
-                    }
-                    }
+                    if(flags(offset)&Cell_Type_Interior && density_sources(0)->Inside(hierarchy->Lattice(level).Center(index))) data(offset)=(T)1.;
+                    range_iterator.Next();}}}
     }
 //######################################################################
     void Initialize_Sources(const int test_number) override
     {
+        TV min_corner=TV({.45,0}),max_corner=TV({.55,.05});	
+        Implicit_Object<T,d>* obj=new Box_Implicit_Object<T,d>(min_corner,max_corner);
+        density_sources.Append(obj);
         // const T cell_width=(T)4./counts(0);
         // switch (test_number)
         // {

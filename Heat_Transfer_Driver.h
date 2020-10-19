@@ -21,10 +21,6 @@ class Heat_Transfer_Driver: public Driver<T,d>
 
   public:
     int substep_counter;
-    // T density_advection_rt;
-    // T velocity_advection_rt;
-    // T source_modification_rf;
-    // T projection_rt;
     T total_rt;
     Heat_Transfer_Example<T,d>& example;
 
@@ -34,7 +30,7 @@ class Heat_Transfer_Driver: public Driver<T,d>
 //######################################################################
     void Initialize() override;
     void Advance_One_Time_Step_Explicitly(const T dt,const T time);
-    // void Advance_One_Time_Step_Implicitly(const T dt,const T time);
+    void Advance_One_Time_Step_Implicitly(const T dt,const T time);
     void Advance_To_Target_Time(const T target_time) override;
     void Simulate_To_Frame(const int frame) override;
 //######################################################################
